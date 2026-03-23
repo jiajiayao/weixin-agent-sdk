@@ -1,59 +1,70 @@
 # weixin-agent-sdk
 
-> WeChat AI agent bridge for Codex, ACP, and OpenAI.  
-> 微信 AI Agent 桥接工具，支持 Codex、ACP 和 OpenAI。
+> 🤖 WeChat AI bot bridge for Codex, ACP, and OpenAI.  
+> 🤖 微信 AI 机器人桥接工具，支持 Codex、ACP 和 OpenAI。
+
+> ✨ **Supports Codex device-code / browser login on a headless machine.**  
+> ✨ **重点支持 Codex 扫码式设备码授权登录，特别适合远程 Mac。**
 
 This repository helps you connect **WeChat** to an **AI agent** with as little glue code as possible.
 
-这个仓库的目标很直接：把 **微信** 接到 **AI Agent**，尽量少写中间层代码。
+这个仓库的目标很直接：把 **微信** 接到 **AI Agent**，尽量少折腾中间层代码。
 
 It is especially useful if you want:
 
-- to chat with **Codex** through WeChat
-- to run a **headless macOS bot**
-- to use **QR login for WeChat**
-- to use **Codex account device login** instead of managing API keys
-- to connect any **ACP-compatible agent**
+- 💬 to chat with **Codex** through WeChat
+- 🖥️ to run a **headless macOS bot**
+- 📱 to use **QR login for WeChat**
+- 🔐 to use **Codex account device login** instead of managing API keys
+- 🔌 to connect any **ACP-compatible agent**
 
 如果你想做下面这些事，这个仓库就是为你准备的：
 
-- 在微信里和 **Codex** 对话
-- 在 **无头 macOS** 上长期运行机器人
-- 用 **微信扫码** 登录
-- 用 **Codex 设备码授权登录**，而不是维护 API Key
-- 接入任何兼容 **ACP** 的 Agent
+- 💬 在微信里和 **Codex** 对话
+- 🖥️ 在 **无头 macOS** 上长期运行机器人
+- 📱 用 **微信扫码** 登录
+- 🔐 用 **Codex 设备码授权登录**，而不是维护 API Key
+- 🔌 接入任何兼容 **ACP** 的 Agent
 
-## Why this fork matters | 这个分支有什么价值
+## Why this fork matters | 这个分支为什么更好用
 
 Compared with the upstream project, this fork focuses on **real deployment**.
 
-相较于上游项目，这个分支更关注 **实际部署可用性**。
+相较于上游项目，这个分支更关注 **实际部署可用性**，而不是只停留在“能跑起来”。
 
 It adds:
 
-- a practical **Codex + WeChat** flow
-- **device-auth login** for Codex on remote machines
-- **launchd autostart** scripts for macOS
-- an easier **OpenAI example** startup flow
-- operational documentation for long-running bots
+- 🚀 a practical **Codex + WeChat** flow
+- 🔐 **device-auth login** for Codex on remote machines
+- 🍎 **launchd autostart** scripts for macOS
+- 🧩 an easier **OpenAI example** startup flow
+- 📘 operational documentation for long-running bots
 
 它额外补了这些内容：
 
-- 可直接运行的 **Codex + 微信** 方案
-- 适合远程机器的 **Codex 设备码登录**
-- 面向 macOS 的 **launchd 开机自启动**
-- 更易用的 **OpenAI 示例启动方式**
-- 更完整的长期运行与维护文档
+- 🚀 可直接运行的 **Codex + 微信** 方案
+- 🔐 适合远程机器的 **Codex 设备码登录**
+- 🍎 面向 macOS 的 **launchd 开机自启动**
+- 🧩 更易用的 **OpenAI 示例启动方式**
+- 📘 更完整的长期运行与维护文档
 
-## Highlight: Codex account login | 重点：Codex 账号授权登录
+## Highlight: Codex login first | 重点突出：Codex 登录优先
 
 The most important feature in this fork is:
 
-**You can log Codex in on a headless machine using OpenAI device authorization.**
+**You can log Codex in on a headless machine using OpenAI device authorization, then use it from WeChat.**
 
 这个分支最重要的能力是：
 
-**可以在无头机器上通过 OpenAI 设备码授权方式登录 Codex。**
+**可以在无头机器上通过 OpenAI 设备码授权方式登录 Codex，然后直接在微信里使用它。**
+
+If you only remember one thing, remember this:
+
+**This repo is the “WeChat + Codex login + autostart” version.**
+
+如果你只记住一件事，那就是：
+
+**这个仓库主打的就是“微信 + Codex 授权登录 + 开机自启动”。**
 
 That means:
 
@@ -257,6 +268,10 @@ This script:
 - 安装仓库内的 `launchd` 模板
 - 启用 `ai.weixin-agent-codex`
 - 立即拉起服务
+
+In short: login once, scan once, boot forever.
+
+一句话总结：登录一次，扫码一次，开机常驻。
 
 Useful log commands:
 
