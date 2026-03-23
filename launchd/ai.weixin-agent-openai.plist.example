@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>ai.weixin-agent-openai</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/YOUR_USER/workspace/weixin-agent-sdk/weixin-openai-start.sh</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/Users/YOUR_USER/.local/bin:/Users/YOUR_USER/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>WEIXIN_AGENT_REPO_DIR</key>
+    <string>/Users/YOUR_USER/workspace/weixin-agent-sdk</string>
+    <key>WEIXIN_AGENT_ENV_FILE</key>
+    <string>/Users/YOUR_USER/.config/weixin-agent-openai.env</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>WorkingDirectory</key>
+  <string>/Users/YOUR_USER/workspace/weixin-agent-sdk</string>
+  <key>StandardOutPath</key>
+  <string>/Users/YOUR_USER/Library/Logs/weixin-agent-openai.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/YOUR_USER/Library/Logs/weixin-agent-openai.err.log</string>
+</dict>
+</plist>

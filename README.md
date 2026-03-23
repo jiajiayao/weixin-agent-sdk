@@ -1,195 +1,294 @@
 # weixin-agent-sdk
 
-> 本项目非微信官方项目，代码由 [@tencent-weixin/openclaw-weixin](https://npmx.dev/package/@tencent-weixin/openclaw-weixin) 改造而来，仅供学习交流使用。
+> This repository is not an official WeChat project. It is adapted from [@tencent-weixin/openclaw-weixin](https://npmx.dev/package/@tencent-weixin/openclaw-weixin) for learning, experimentation, and self-hosted integrations.
 
-微信 AI Agent 桥接框架 —— 通过简单的 Agent 接口，将任意 AI 后端接入微信。
+Bridge WeChat to AI agents through a small SDK, an ACP adapter, and ready-to-run headless scripts for macOS.
 
-## 项目结构
+> Highlight: this fork supports **Codex account sign-in on a headless machine** through the OpenAI device-auth flow. In practice, you run `./codex-account-login.sh`, open the device-auth URL in a browser, and complete the authorization without managing API keys.
 
-```
+## What this fork adds
+
+- Headless `Codex + WeChat` flow for macOS via device-code / browser authorization
+- `OpenAI + WeChat` wrapper scripts and env-file based startup
+- `launchd` templates for long-running background services
+- One-command `launchd` installer for Codex autostart
+- Documentation for state paths, auth flows, and operational setup
+
+## Repository layout
+
+```text
 packages/
-  sdk/                  weixin-agent-sdk —— 微信桥接 SDK
-  agent-acp/            ACP (Agent Client Protocol) 适配器
-  example-openai/       基于 OpenAI 的示例
+  sdk/                  Core WeChat bridge SDK
+  agent-acp/            ACP adapter published as weixin-acp
+  example-openai/       OpenAI example agent
+
+launchd/
+  ai.weixin-agent-codex.plist.example
+  ai.weixin-agent-openai.plist.example
+
+codex-account-login.sh  Codex account login (device auth)
+codex-acp-run.sh        Local ACP wrapper for Codex
+install-launchd-codex.sh Install and enable macOS autostart for Codex flow
+weixin-codex-login.sh   WeChat QR login for ACP flow
+weixin-codex-start.sh   Start weixin-acp with codex-acp
+weixin-openai-login.sh  WeChat QR login for OpenAI example
+weixin-openai-start.sh  Start the OpenAI example with env file
+weixin-agent-openai.env.example
 ```
 
-## 通过 ACP 接入 Claude Code, Codex, kimi-cli 等 Agent
+## Requirements
 
-[ACP (Agent Client Protocol)](https://agentclientprotocol.com/) 是一个开放的 Agent 通信协议。如果你已有兼容 ACP 的 agent，可以直接通过 [`weixin-acp`](https://www.npmjs.com/package/weixin-acp) 接入微信，无需编写任何代码。
+- macOS or Linux
+- Node.js `>= 22`
+- `pnpm` via Corepack or global install
 
-
-### 扫码登录
+Recommended:
 
 ```bash
-npx weixin-acp login
+corepack enable
+corepack prepare pnpm@latest --activate
+pnpm install
 ```
 
-### Claude Code
+If you want to run `packages/example-openai`, build the SDK once after install:
 
 ```bash
-# 安装 claude-agent-acp
-npm install -g @zed-industries/claude-agent-acp
-
-# 启动 agent
-npx weixin-acp start -- claude-agent-acp
+pnpm --dir packages/sdk run build
 ```
 
-### Codex
+## Quickstart
 
-```bash
-# 安装 codex-acp
-npm install -g @zed-industries/codex-acp
+### Option A: Codex account auth + WeChat QR login
 
-# 启动 agent
-npx weixin-acp start -- codex-acp
-```
+This is the recommended path for a headless Mac that should run on a ChatGPT plan instead of API keys.
+It is the most important flow in this fork.
 
-### kimi-cli
-
-```bash
-npx weixin-acp start -- kimi acp
-```
-
-`--` 后面的部分就是你的 ACP agent 启动命令，`weixin-acp` 会自动以子进程方式启动它，通过 JSON-RPC over stdio 进行通信。
-
-更多 ACP 兼容 agent 请参考 [ACP agent 列表](https://agentclientprotocol.com/get-started/agents)。
-
-## 自定义 Agent
-
-SDK 只导出三样东西：
-
-- **`Agent`** 接口 —— 实现它就能接入微信
-- **`login()`** —— 扫码登录
-- **`start(agent)`** —— 启动消息循环
-
-### Agent 接口
-
-```typescript
-interface Agent {
-  chat(request: ChatRequest): Promise<ChatResponse>;
-}
-
-interface ChatRequest {
-  conversationId: string;         // 用户标识，可用于维护多轮对话
-  text: string;                   // 文本内容
-  media?: {                       // 附件（图片/语音/视频/文件）
-    type: "image" | "audio" | "video" | "file";
-    filePath: string;             // 本地文件路径（已下载解密）
-    mimeType: string;
-    fileName?: string;
-  };
-}
-
-interface ChatResponse {
-  text?: string;                  // 回复文本（支持 markdown，发送前自动转纯文本）
-  media?: {                       // 回复媒体
-    type: "image" | "video" | "file";
-    url: string;                  // 本地路径或 HTTPS URL
-    fileName?: string;
-  };
-}
-```
-
-### 最简示例
-
-```typescript
-import { login, start, type Agent } from "weixin-agent-sdk";
-
-const echo: Agent = {
-  async chat(req) {
-    return { text: `你说了: ${req.text}` };
-  },
-};
-
-await login();
-await start(echo);
-```
-
-### 完整示例（自己管理对话历史）
-
-```typescript
-import { login, start, type Agent } from "weixin-agent-sdk";
-
-const conversations = new Map<string, string[]>();
-
-const myAgent: Agent = {
-  async chat(req) {
-    const history = conversations.get(req.conversationId) ?? [];
-    history.push(req.text);
-
-    // 调用你的 AI 服务...
-    const reply = await callMyAI(history);
-
-    history.push(reply);
-    conversations.set(req.conversationId, history);
-    return { text: reply };
-  },
-};
-
-await login();
-await start(myAgent);
-```
-
-### OpenAI 示例
-
-`packages/example-openai/` 是一个完整的 OpenAI Agent 实现，支持多轮对话和图片输入：
+Install dependencies:
 
 ```bash
 pnpm install
-
-# 扫码登录微信
-pnpm run login -w packages/example-openai
-
-# 启动 bot
-OPENAI_API_KEY=sk-xxx pnpm run start -w packages/example-openai
 ```
 
-支持的环境变量：
+Log Codex in with device auth:
 
-| 变量 | 必填 | 说明 |
-|------|------|------|
-| `OPENAI_API_KEY` | 是 | OpenAI API Key |
-| `OPENAI_BASE_URL` | 否 | 自定义 API 地址（兼容 OpenAI 接口的第三方服务） |
-| `OPENAI_MODEL` | 否 | 模型名称，默认 `gpt-5.4` |
-| `SYSTEM_PROMPT` | 否 | 系统提示词 |
+```bash
+./codex-account-login.sh
+```
 
-## 支持的消息类型
+This prints a device-auth URL and one-time code. Open the URL in a browser, sign in to ChatGPT, and finish the authorization flow.
+This is effectively the "Codex scan / authorize login" flow for remote and headless machines.
 
-### 接收（微信 → Agent）
+Check current status:
 
-| 类型 | `media.type` | 说明 |
-|------|-------------|------|
-| 文本 | — | `request.text` 直接拿到文字 |
-| 图片 | `image` | 自动从 CDN 下载解密，`filePath` 指向本地文件 |
-| 语音 | `audio` | SILK 格式自动转 WAV（需安装 `silk-wasm`） |
-| 视频 | `video` | 自动下载解密 |
-| 文件 | `file` | 自动下载解密，保留原始文件名 |
-| 引用消息 | — | 被引用的文本拼入 `request.text`，被引用的媒体作为 `media` 传入 |
-| 语音转文字 | — | 微信侧转写的文字直接作为 `request.text` |
+```bash
+./codex-account-login.sh status
+```
 
-### 发送（Agent → 微信）
+Connect WeChat by QR code:
 
-| 类型 | 用法 |
-|------|------|
-| 文本 | 返回 `{ text: "..." }` |
-| 图片 | 返回 `{ media: { type: "image", url: "/path/to/img.png" } }` |
-| 视频 | 返回 `{ media: { type: "video", url: "/path/to/video.mp4" } }` |
-| 文件 | 返回 `{ media: { type: "file", url: "/path/to/doc.pdf" } }` |
-| 文本 + 媒体 | `text` 和 `media` 同时返回，文本作为附带说明发送 |
-| 远程图片 | `url` 填 HTTPS 链接，SDK 自动下载后上传到微信 CDN |
+```bash
+./weixin-codex-login.sh
+```
 
-## 内置斜杠命令
+Start the bot:
 
-在微信中发送以下命令：
+```bash
+./weixin-codex-start.sh
+```
 
-- `/echo <消息>` —— 直接回复（不经过 Agent），附带通道耗时统计
-- `/toggle-debug` —— 开关 debug 模式，启用后每条回复追加全链路耗时
+What this does:
 
-## 技术细节
+- `weixin-codex-login.sh` runs `weixin-acp login`
+- `weixin-codex-start.sh` runs `weixin-acp start -- ./codex-acp-run.sh`
+- `codex-acp-run.sh` runs `codex-acp`, which wraps the local `codex` CLI over ACP
+- `install-launchd-codex.sh` installs and enables macOS autostart for this flow
 
-- 使用 **长轮询** (`getUpdates`) 接收消息，无需公网服务器
-- 媒体文件通过微信 CDN 中转，**AES-128-ECB** 加密传输
-- 单账号模式：每次 `login` 覆盖之前的账号
-- 断点续传：`get_updates_buf` 持久化到 `~/.openclaw/`，重启后从上次位置继续
-- 会话过期自动重连（errcode -14 触发 1 小时冷却后恢复）
-- Node.js >= 22
+### Option B: OpenAI API key + WeChat QR login
+
+Copy and edit the env template:
+
+```bash
+cp weixin-agent-openai.env.example ~/.config/weixin-agent-openai.env
+chmod 600 ~/.config/weixin-agent-openai.env
+```
+
+Set at least:
+
+```bash
+OPENAI_API_KEY=...
+OPENAI_MODEL=gpt-5.4
+```
+
+Connect WeChat by QR code:
+
+```bash
+./weixin-openai-login.sh
+```
+
+Start the example:
+
+```bash
+./weixin-openai-start.sh
+```
+
+### Option C: Claude via ACP
+
+The ACP adapter for Claude does not provide account-based auth in its published README. Use it only if you are willing to supply `ANTHROPIC_API_KEY`.
+
+Typical flow:
+
+```bash
+pnpm add -w @zed-industries/claude-agent-acp
+pnpm exec weixin-acp login
+pnpm exec weixin-acp start -- pnpm exec claude-agent-acp
+```
+
+## Root helper scripts
+
+These wrappers exist to keep remote/headless setup simple:
+
+- `./codex-account-login.sh`
+- `./weixin-codex-login.sh`
+- `./weixin-codex-start.sh`
+- `./weixin-openai-login.sh`
+- `./weixin-openai-start.sh`
+
+Equivalent root package scripts are also provided:
+
+```bash
+pnpm run codex:login
+pnpm run launchd:install:codex
+pnpm run weixin:login:codex
+pnpm run weixin:start:codex
+pnpm run weixin:login:openai
+pnpm run weixin:start:openai
+```
+
+## launchd setup
+
+Example templates live in:
+
+- `launchd/ai.weixin-agent-codex.plist.example`
+- `launchd/ai.weixin-agent-openai.plist.example`
+
+Copy the template you want to `~/Library/LaunchAgents/`, replace `YOUR_USER`, then load it:
+
+```bash
+cp launchd/ai.weixin-agent-codex.plist.example ~/Library/LaunchAgents/ai.weixin-agent-codex.plist
+launchctl bootstrap "gui/$(id -u)" ~/Library/LaunchAgents/ai.weixin-agent-codex.plist
+launchctl kickstart -k "gui/$(id -u)/ai.weixin-agent-codex"
+```
+
+To inspect logs:
+
+```bash
+tail -f ~/Library/Logs/weixin-agent-codex.log
+tail -f ~/Library/Logs/weixin-agent-codex.err.log
+```
+
+If you want the repository to install Codex autostart for you, use:
+
+```bash
+./install-launchd-codex.sh
+```
+
+or:
+
+```bash
+pnpm run launchd:install:codex
+```
+
+## Development
+
+Useful commands:
+
+```bash
+pnpm run build:sdk
+pnpm run build:agent-acp
+pnpm run typecheck
+pnpm run typecheck:example-openai
+pnpm run typecheck:agent-acp
+```
+
+Notes:
+
+- `packages/example-openai` imports the local workspace SDK package, so `packages/sdk` must be built first.
+- `weixin-acp` is the published package name for `packages/agent-acp`.
+- The root shell wrappers are intentionally thin and safe to use over SSH.
+
+## WeChat state and credentials
+
+WeChat-related state is typically stored under:
+
+```text
+~/.openclaw/openclaw-weixin/
+```
+
+Important data includes:
+
+- account tokens
+- account index
+- sync buffers for long polling
+
+Codex auth state is typically stored under:
+
+```text
+~/.codex/
+```
+
+OpenAI example env file is expected at:
+
+```text
+~/.config/weixin-agent-openai.env
+```
+
+## Security
+
+Do not commit any of the following:
+
+- `OPENAI_API_KEY`
+- `ANTHROPIC_API_KEY`
+- generated account tokens under `~/.openclaw/`
+- Codex login state under `~/.codex/`
+- machine-specific `~/Library/LaunchAgents/*.plist`
+
+Commit only:
+
+- scripts
+- templates
+- docs
+- source changes
+
+## Supported message types
+
+Inbound:
+
+- text
+- image
+- audio
+- video
+- file
+- quoted messages
+
+Outbound:
+
+- text
+- image
+- video
+- file
+- text + media
+
+## Slash commands
+
+Built-in WeChat slash commands include:
+
+- `/echo <message>`
+- `/toggle-debug`
+
+## References
+
+- [ACP overview](https://agentclientprotocol.com/)
+- [weixin-acp on npm](https://www.npmjs.com/package/weixin-acp)
+- [codex-acp on npm](https://www.npmjs.com/package/@zed-industries/codex-acp)
+- [claude-agent-acp on npm](https://www.npmjs.com/package/@zed-industries/claude-agent-acp)
+- [OpenAI Codex CLI](https://www.npmjs.com/package/@openai/codex)

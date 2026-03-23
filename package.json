@@ -1,6 +1,21 @@
 {
   "private": true,
   "scripts": {
-    "typecheck": "pnpm -r run typecheck"
+    "build:agent-acp": "pnpm --dir packages/agent-acp run build",
+    "build:sdk": "pnpm --dir packages/sdk run build",
+    "codex:login": "./codex-account-login.sh",
+    "launchd:install:codex": "./install-launchd-codex.sh",
+    "typecheck": "pnpm -r run typecheck",
+    "typecheck:agent-acp": "pnpm --dir packages/agent-acp run typecheck",
+    "typecheck:example-openai": "pnpm --dir packages/example-openai run typecheck",
+    "weixin:login:codex": "./weixin-codex-login.sh",
+    "weixin:login:openai": "./weixin-openai-login.sh",
+    "weixin:start:codex": "./weixin-codex-start.sh",
+    "weixin:start:openai": "./weixin-openai-start.sh"
+  },
+  "dependencies": {
+    "@openai/codex": "^0.116.0",
+    "@zed-industries/codex-acp": "^0.10.0",
+    "weixin-acp": "^0.1.1"
   }
 }
