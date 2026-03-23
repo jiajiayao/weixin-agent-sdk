@@ -13,6 +13,10 @@
 
 ![Codex WeChat Demo](docs/images/codex-wechat-demo.svg)
 
+**Real running view / 实际运行效果：**
+
+![WeChat Chat Demo](docs/images/wechat-chat-demo.svg)
+
 This repository helps you connect **WeChat** to an **AI agent** with as little glue code as possible.
 
 这个仓库的目标很直接：把 **微信** 接到 **AI Agent**，尽量少折腾中间层代码。
