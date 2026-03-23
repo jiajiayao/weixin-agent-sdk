@@ -32,8 +32,6 @@
   <text x="566" y="658" fill="#34D399" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] response: 我可以帮你写代码、改文档、分析问题。</text>
   <text x="566" y="696" fill="#E5E7EB" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] prompt: "帮我做一个 10 页 PPT 大纲"</text>
   <text x="566" y="734" fill="#34D399" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] response: 可以，先告诉我主题、受众、时长和目标。</text>
-  <text x="566" y="786" fill="#FDE68A" font-size="22" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">提示：这是 SVG 矢量预览图，放大后依然清晰，适合放在 README 首页。</text>
-
   <rect x="72" y="564" width="432" height="372" rx="18" fill="#0F172A" stroke="#374151" stroke-width="2"/>
   <text x="100" y="606" fill="#F8FAFC" font-size="24" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">三步就能跑起来</text>
   <text x="100" y="650" fill="#E5E7EB" font-size="22" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">1. Codex 设备码登录 🔐</text>

@@ -1,5 +1,10 @@
 # weixin-agent-sdk
 
+[![Node >=22](https://img.shields.io/badge/node-%3E%3D22-22c55e)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/jiajiayao/weixin-agent-sdk?style=social)](https://github.com/jiajiayao/weixin-agent-sdk/stargazers)
+[![Codex Login](https://img.shields.io/badge/Codex%20Login-device--auth%20%2B%20browser-8b5cf6)](./codex-account-login.sh)
+
 > 🤖 WeChat AI bot bridge for Codex, ACP, and OpenAI.  
 > 🤖 微信 AI 机器人桥接工具，支持 Codex、ACP 和 OpenAI。
 
