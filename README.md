@@ -6,6 +6,8 @@
 > ✨ **Supports Codex device-code / browser login on a headless machine.**  
 > ✨ **重点支持 Codex 扫码式设备码授权登录，特别适合远程 Mac。**
 
+![Codex WeChat Demo](docs/images/codex-wechat-demo.svg)
+
 This repository helps you connect **WeChat** to an **AI agent** with as little glue code as possible.
 
 这个仓库的目标很直接：把 **微信** 接到 **AI Agent**，尽量少折腾中间层代码。

@@ -1,0 +1,46 @@
+<svg width="1600" height="1040" viewBox="0 0 1600 1040" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1040" rx="28" fill="#0B1020"/>
+  <rect x="24" y="24" width="1552" height="992" rx="22" fill="#111827"/>
+  <rect x="24" y="24" width="1552" height="72" rx="22" fill="#1F2937"/>
+  <circle cx="74" cy="60" r="11" fill="#F87171"/>
+  <circle cx="112" cy="60" r="11" fill="#FBBF24"/>
+  <circle cx="150" cy="60" r="11" fill="#34D399"/>
+  <text x="800" y="67" text-anchor="middle" fill="#E5E7EB" font-size="28" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">WeChat + Codex login demo / 微信 + Codex 登录演示</text>
+
+  <rect x="72" y="138" width="1456" height="136" rx="18" fill="#0F172A" stroke="#1D4ED8" stroke-width="2"/>
+  <text x="104" y="182" fill="#93C5FD" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">$ ./codex-account-login.sh</text>
+  <text x="104" y="222" fill="#E5E7EB" font-size="24" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">在浏览器打开 OpenAI 设备授权页面，然后输入一次性设备码</text>
+  <text x="104" y="258" fill="#34D399" font-size="22" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">Logged in using ChatGPT</text>
+
+  <rect x="72" y="306" width="432" height="216" rx="18" fill="#020617" stroke="#374151" stroke-width="2"/>
+  <text x="100" y="348" fill="#F8FAFC" font-size="24" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">微信扫码登录</text>
+  <text x="100" y="382" fill="#A5B4FC" font-size="22" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">$ ./weixin-codex-login.sh</text>
+  <rect x="100" y="406" width="180" height="88" rx="10" fill="#111827" stroke="#6B7280" stroke-dasharray="8 8"/>
+  <text x="190" y="458" text-anchor="middle" fill="#E5E7EB" font-size="22" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">QR / 扫码区</text>
+  <text x="310" y="444" fill="#E5E7EB" font-size="22" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">等待扫码...</text>
+  <text x="310" y="482" fill="#22C55E" font-size="22" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">与微信连接成功</text>
+
+  <rect x="534" y="306" width="994" height="630" rx="18" fill="#050816" stroke="#334155" stroke-width="2"/>
+  <text x="566" y="348" fill="#93C5FD" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">$ ./weixin-codex-start.sh</text>
+  <text x="566" y="392" fill="#E5E7EB" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[weixin] 启动 bot, account=example-im-bot</text>
+  <text x="566" y="430" fill="#E5E7EB" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[weixin] monitor started (https://ilinkai.weixin.qq.com)</text>
+  <text x="566" y="468" fill="#E5E7EB" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] spawning: ./codex-acp-run.sh</text>
+  <text x="566" y="506" fill="#E5E7EB" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] connection initialized</text>
+  <text x="566" y="544" fill="#E5E7EB" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] prompt: "你好"</text>
+  <text x="566" y="582" fill="#34D399" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] response: 你好，请直接说你想做什么。</text>
+  <text x="566" y="620" fill="#E5E7EB" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] prompt: "你能做什么"</text>
+  <text x="566" y="658" fill="#34D399" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] response: 我可以帮你写代码、改文档、分析问题。</text>
+  <text x="566" y="696" fill="#E5E7EB" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] prompt: "帮我做一个 10 页 PPT 大纲"</text>
+  <text x="566" y="734" fill="#34D399" font-size="24" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">[acp] response: 可以，先告诉我主题、受众、时长和目标。</text>
+  <text x="566" y="786" fill="#FDE68A" font-size="22" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">提示：这是 SVG 矢量预览图，放大后依然清晰，适合放在 README 首页。</text>
+
+  <rect x="72" y="564" width="432" height="372" rx="18" fill="#0F172A" stroke="#374151" stroke-width="2"/>
+  <text x="100" y="606" fill="#F8FAFC" font-size="24" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">三步就能跑起来</text>
+  <text x="100" y="650" fill="#E5E7EB" font-size="22" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">1. Codex 设备码登录 🔐</text>
+  <text x="100" y="690" fill="#E5E7EB" font-size="22" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">2. 微信扫码登录 📱</text>
+  <text x="100" y="730" fill="#E5E7EB" font-size="22" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">3. 启动机器人并可选开机自启 🚀</text>
+  <text x="100" y="790" fill="#93C5FD" font-size="22" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">./codex-account-login.sh</text>
+  <text x="100" y="826" fill="#93C5FD" font-size="22" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">./weixin-codex-login.sh</text>
+  <text x="100" y="862" fill="#93C5FD" font-size="22" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">./weixin-codex-start.sh</text>
+  <text x="100" y="898" fill="#93C5FD" font-size="22" font-family="SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace">./install-launchd-codex.sh</text>
+</svg>
